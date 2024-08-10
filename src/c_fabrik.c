@@ -18,6 +18,7 @@ limb_t newLimb(size_t initJointNum)
 void destroyLimb(limb_t *limb)
 {
     vector_destroy(limb->limbs);
+    free(limb->limbs);
 }
 
 joint_t getJoint(limb_t *limb, size_t index)
