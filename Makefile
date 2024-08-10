@@ -26,7 +26,7 @@ DEPS :=
 .PHONY: clean_all clean
 
 out/$(TAR_DIR)/lib$(NAME).a: $(DEPREQ) $(OBJS) $(DEPS)
-	@printf "\033[0;31mcreating library ($@)\033[0m\n"
+	@printf "$(RED)creating library ($@)$(NONE)\n"
 	$(eval DEP_OBJS := $(foreach lib,$(DEPS),dep_objs/$(shell ar t $(lib) | sed -n '2p')))
 	mkdir -p $(dir $@)
 	ar rcs $@ $(DEP_OBJS) $(OBJS)
