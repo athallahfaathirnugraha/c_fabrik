@@ -21,6 +21,11 @@ void destroyLimb(limb_t *limb)
     free(limb->limbs);
 }
 
+size_t jointLen(limb_t *limb)
+{
+    return limb->limbs->size;
+}
+
 joint_t getJoint(limb_t *limb, size_t index)
 {
     return *(joint_t*)vector_get(limb->limbs, index);

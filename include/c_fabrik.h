@@ -26,6 +26,9 @@ limb_t newLimb(size_t initJointNum);
 // free allocated memories for limb
 void destroyLimb(limb_t *limb);
 
+// returns the number of joints in a limb
+size_t jointLen(limb_t *limb);
+
 // get n-th joint from a limb
 joint_t getJoint(limb_t *limb, size_t index);
 
