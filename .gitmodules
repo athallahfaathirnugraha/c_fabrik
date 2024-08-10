@@ -1,0 +1,3 @@
+[submodule "deps/vector"]
+	path = deps/vector
+	url = https://github.com/goldsborough/vector.git

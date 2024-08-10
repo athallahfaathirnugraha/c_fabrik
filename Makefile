@@ -21,9 +21,9 @@ SRCS := $(wildcard src/*.c)
 OBJS := $(patsubst src/%.c,obj/$(TAR_DIR)/%.o,$(SRCS))
 DEPREQ := $(patsubst src/%.c,depreq/$(TAR_DIR)/%.d,$(SRCS))
 
-DEPS := 
+DEPS := deps/vector/libvector-static.a
 
-.PHONY: clean_all clean
+.PHONY: clean_all clean clean_vector
 
 out/$(TAR_DIR)/lib$(NAME).a: $(DEPREQ) $(OBJS) $(DEPS)
 	@printf "$(RED)creating library ($@)$(NONE)\n"
@@ -50,4 +50,19 @@ clean:
 	@echo "cleaning $(NAME)"
 	rm -rf depreq obj out
 
-clean_all: clean
+# makes dep objs too
+deps/vector/libvector-static.a:
+	@printf "$(RED)creating vector$(NONE)\n"
+	mkdir -p dep_objs
+	cd deps/vector && \
+	cmake . && \
+	make && \
+	rm -rf vector-example vector-test
+	cd dep_objs && \
+	ar x ../deps/vector/libvector-static.a
+
+clean_vector:
+	@printf "\033[0;31mcleaning vector\033[0m\n"
+	cd deps/vector && git clean -x -d -f
+
+clean_all: clean clean_vector
