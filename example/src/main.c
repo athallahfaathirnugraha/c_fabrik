@@ -1,3 +1,5 @@
+// TODO: customizable settings
+
 #include <c_fabrik.h>
 #include <raylib.h>
 #include <stdio.h>
