@@ -49,6 +49,8 @@ joint_t *tailJoint(limb_t *limb)
 
 void reach(limb_t *limb, float targetX, float targetY, size_t iterNum)
 {
+    if (jointLen(limb) == 0) return;
+    
     float headX = headJoint(limb)->x;
     float headY = headJoint(limb)->y;
 
