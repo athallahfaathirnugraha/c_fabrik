@@ -99,7 +99,7 @@ void pullTail(limb_t *limb, float targetX, float targetY)
         joint_t *nextJoint = getJoint(limb, i + 1);
 
         float dist = fdist(joint->x, joint->y, nextJoint->x, nextJoint->y);
-        float deltaDist = dist - nextJoint->distToNext;
+        float deltaDist = dist - joint->distToNext;
 
         float xk = (nextJoint->x - joint->x) / dist;
         float yk = (nextJoint->y - joint->y) / dist;
@@ -114,5 +114,10 @@ void pullTail(limb_t *limb, float targetX, float targetY)
 
 void addJoint(limb_t *limb, joint_t joint)
 {
+    if (jointLen(limb) > 0) {
+        joint_t *tail = tailJoint(limb);
+        tail->distToNext = fdist(tail->x, tail->y, joint.x, joint.y);
+    }
+    
     vector_push_back(limb->limbs, &joint);
 }

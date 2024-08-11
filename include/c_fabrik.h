@@ -23,7 +23,6 @@ typedef struct limb_t
 // create a new limb.
 // after limb is no longer used, destroy with destroyLimb
 limb_t newLimb(size_t initJointNum);
-// TODO: calcDist so we dont have to input every dist manually
 // free allocated memories for limb
 void destroyLimb(limb_t *limb);
 

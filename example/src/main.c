@@ -18,7 +18,6 @@ int main()
         joint_t joint = {
             .x = (float)WINSIZE / 2 + i * 30,
             .y = (float)WINSIZE / 2 + i * 30,
-            .distToNext = 42.4264068712
         };
 
         addJoint(&limb, joint);
