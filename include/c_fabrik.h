@@ -46,4 +46,7 @@ void pullTail(limb_t *limb, float targetX, float targetY);
 // add a joint to a limb
 void addJoint(limb_t *limb, joint_t joint);
 
+// remove all joint in a limb
+void clearJoint(limb_t *limb);
+
 #endif

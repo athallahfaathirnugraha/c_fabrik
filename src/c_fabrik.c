@@ -118,3 +118,8 @@ void addJoint(limb_t *limb, joint_t joint)
     
     vector_push_back(limb->limbs, &joint);
 }
+
+void clearJoint(limb_t *limb)
+{
+    vector_clear(limb->limbs);
+}
