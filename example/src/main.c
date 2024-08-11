@@ -19,6 +19,7 @@ typedef struct Palette
 int main()
 {
     size_t iterNum = 10;
+    bool shouldReach = false;
 
     // create limb
     limb_t limb = newLimb(3);
@@ -36,13 +37,17 @@ int main()
         bool inUi = false;
 
         {
-            Rectangle clearBtn = { .x = 30, .y = 30, .width = 70, .height = 30 };
-            Rectangle iterNumSlider = { .x = 30, .y = 70, .width = 70, .height = 10 };
+            Rectangle clearBtn = { .x = 30, .y = 30, .width = 50, .height = 20 };
+            Rectangle iterNumLabel = { .x = 30, .y = 65, .width = 170, .height = 10 };
+            Rectangle iterNumSlider = { .x = 30, .y = 90, .width = 70, .height = 10 };
+            Rectangle controlsLabel = { .x = 30, .y = 115, .width = 170, .height = 20 };
 
             if (GuiButton(clearBtn, "clear")) {
                 clearJoint(&limb);
                 inUi = true;
             }
+
+            GuiLabel(iterNumLabel, "number of iteration per frame:");
 
             float fIterNum = iterNum;
 
@@ -51,9 +56,12 @@ int main()
                 inUi = true;
             }
 
+            GuiLabel(controlsLabel, "space - continue/pause\nright arrow - iter");
+
             if (!inUi) {
-                const size_t boundLen = 2;
-                Rectangle rectList[boundLen] = { clearBtn, iterNumSlider };
+                const size_t boundLen = 3;
+
+                Rectangle rectList[boundLen] = { clearBtn, iterNumLabel, iterNumSlider };
 
                 for (size_t i = 0; i < boundLen; i++) {
                     if (CheckCollisionPointRec(mousePos, rectList[i])) {
@@ -74,7 +82,10 @@ int main()
             addJoint(&limb, joint);
         }
 
-        reach(&limb, mousePos.x, mousePos.y, iterNum);
+        if (IsKeyPressed(KEY_SPACE)) shouldReach = !shouldReach;
+
+        if (shouldReach) reach(&limb, mousePos.x, mousePos.y, iterNum);
+        if (IsKeyPressed(KEY_RIGHT)) reach(&limb, mousePos.x, mousePos.y, 1);
 
         BeginDrawing();
 
