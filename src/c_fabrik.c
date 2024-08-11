@@ -2,8 +2,14 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
 #include <vector.h>
+
+static float fdist(float ax, float ay, float bx, float by)
+{
+    return sqrt((ax - bx) * (ax - bx) + (ay - by) * (ay - by));
+}
 
 limb_t newLimb(size_t initJointNum)
 {
@@ -26,9 +32,84 @@ size_t jointLen(limb_t *limb)
     return limb->limbs->size;
 }
 
-joint_t getJoint(limb_t *limb, size_t index)
+joint_t *getJoint(limb_t *limb, size_t index)
 {
-    return *(joint_t*)vector_get(limb->limbs, index);
+    return (joint_t*)vector_get(limb->limbs, index);
+}
+
+joint_t *headJoint(limb_t *limb)
+{
+    return getJoint(limb, 0);
+}
+
+joint_t *tailJoint(limb_t *limb)
+{
+    return getJoint(limb, jointLen(limb) - 1);
+}
+
+void reach(limb_t *limb, float targetX, float targetY, size_t iterNum)
+{
+    float headX = headJoint(limb)->x;
+    float headY = headJoint(limb)->y;
+
+    for (size_t i = 0; i < iterNum; i++) {
+        pullTail(limb, targetX, targetY);
+        pullHead(limb, headX, headY);
+    }
+}
+
+void pullHead(limb_t *limb, float targetX, float targetY)
+{
+    // pull head
+    joint_t *head = headJoint(limb);
+
+    head->x = targetX;
+    head->y = targetY;
+
+    // pull rest of limb
+    for (size_t i = 1; i < jointLen(limb); i++) {
+        joint_t *joint = getJoint(limb, i);
+        joint_t *prevJoint = getJoint(limb, i - 1);
+
+        float dist = fdist(joint->x, joint->y, prevJoint->x, prevJoint->y);
+        float deltaDist = dist - prevJoint->distToNext;
+
+        float xk = (prevJoint->x - joint->x) / dist;
+        float yk = (prevJoint->y - joint->y) / dist;
+
+        float deltaX = deltaDist * xk;
+        float deltaY = deltaDist * yk;
+
+        joint->x += deltaX;
+        joint->y += deltaY;
+    }
+}
+
+void pullTail(limb_t *limb, float targetX, float targetY)
+{
+    // pull tail
+    joint_t *tail = tailJoint(limb);
+
+    tail->x = targetX;
+    tail->y = targetY;
+    
+    // pull rest of limb
+    for (int i = jointLen(limb) - 2; i >= 0; i--) {
+        joint_t *joint = getJoint(limb, i);
+        joint_t *nextJoint = getJoint(limb, i + 1);
+
+        float dist = fdist(joint->x, joint->y, nextJoint->x, nextJoint->y);
+        float deltaDist = dist - nextJoint->distToNext;
+
+        float xk = (nextJoint->x - joint->x) / dist;
+        float yk = (nextJoint->y - joint->y) / dist;
+
+        float deltaX = deltaDist * xk;
+        float deltaY = deltaDist * yk;
+
+        joint->x += deltaX;
+        joint->y += deltaY;
+    }
 }
 
 void addJoint(limb_t *limb, joint_t joint)
