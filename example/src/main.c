@@ -10,6 +10,12 @@
 #define WINSIZE 600
 #define POINTRAD 5
 
+typedef struct Palette
+{
+    Color bg;
+    Color line;
+} Palette;
+
 int main()
 {
     size_t iterNum = 10;
@@ -18,6 +24,11 @@ int main()
     limb_t limb = newLimb(3);
 
     InitWindow(WINSIZE, WINSIZE, "example");
+
+    Palette colors = {
+        .bg = GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)),
+        .line = GetColor(GuiGetStyle(DEFAULT, LINE_COLOR))
+    };
 
     while (!WindowShouldClose()) {
         Vector2 mousePos = GetMousePosition();
@@ -33,7 +44,7 @@ int main()
                 inUi = true;
             }
 
-            float fIterNum;
+            float fIterNum = iterNum;
 
             if (GuiSlider(iterNumSlider, "0", "30", &fIterNum, 0, 30)) {
                 iterNum = fIterNum;
@@ -67,16 +78,16 @@ int main()
 
         BeginDrawing();
 
-        ClearBackground(BLACK);
+        ClearBackground(colors.bg);
 
         for (size_t i = 0; i < jointLen(&limb); i++) {
             joint_t *a = getJoint(&limb, i);
-            DrawCircle(a->x, a->y, POINTRAD, WHITE);
+            DrawCircle(a->x, a->y, POINTRAD, colors.line);
 
             if (i + 1 < jointLen(&limb)) {
                 // draw line between a & b
                 joint_t *b = getJoint(&limb, i + 1);
-                DrawLine(a->x, a->y, b->x, b->y, WHITE);
+                DrawLine(a->x, a->y, b->x, b->y, colors.line);
             }
         }
 
