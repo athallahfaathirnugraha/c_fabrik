@@ -1,41 +1,69 @@
-// TODO: customizable settings
-
 #include <c_fabrik.h>
-#include <raylib.h>
+
 #include <stdio.h>
+#include <raylib.h>
+#include <stdbool.h>
+
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
 
 #define WINSIZE 600
 #define POINTRAD 5
 
-#define JOINTNUM 4
-#define ITERNUM 10
-
 int main()
 {
+    size_t iterNum = 10;
+
     // create limb
     limb_t limb = newLimb(3);
-
-    // add joints
-    for (size_t i = 0; i < JOINTNUM; i++) {
-        joint_t joint = {
-            .x = (float)WINSIZE / 2 + i * 30,
-            .y = (float)WINSIZE / 2 + i * 30,
-        };
-
-        addJoint(&limb, joint);
-    }
-
-    // print joints
-    for (size_t i = 0; i < jointLen(&limb); i++) {
-        joint_t *joint = getJoint(&limb, i);
-        printf("joint %zu: %f, %f\n", i, joint->x, joint->y);
-    }
 
     InitWindow(WINSIZE, WINSIZE, "example");
 
     while (!WindowShouldClose()) {
         Vector2 mousePos = GetMousePosition();
-        reach(&limb, mousePos.x, mousePos.y, ITERNUM);
+
+        bool inUi = false;
+
+        {
+            Rectangle clearBtn = { .x = 30, .y = 30, .width = 70, .height = 30 };
+            Rectangle iterNumSlider = { .x = 30, .y = 70, .width = 70, .height = 10 };
+
+            if (GuiButton(clearBtn, "clear")) {
+                clearJoint(&limb);
+                inUi = true;
+            }
+
+            float fIterNum;
+
+            if (GuiSlider(iterNumSlider, "0", "30", &fIterNum, 0, 30)) {
+                iterNum = fIterNum;
+                inUi = true;
+            }
+
+            if (!inUi) {
+                const size_t boundLen = 2;
+                Rectangle rectList[boundLen] = { clearBtn, iterNumSlider };
+
+                for (size_t i = 0; i < boundLen; i++) {
+                    if (CheckCollisionPointRec(mousePos, rectList[i])) {
+                        inUi = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON) && !inUi) {
+            // add joint
+            joint_t joint = {
+                .x = mousePos.x,
+                .y = mousePos.y
+            };
+
+            addJoint(&limb, joint);
+        }
+
+        reach(&limb, mousePos.x, mousePos.y, iterNum);
 
         BeginDrawing();
 
