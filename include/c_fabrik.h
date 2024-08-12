@@ -2,6 +2,7 @@
 #define _C_FABRIK_
 
 #include <stdlib.h>
+#include <stdbool.h>
 
 // vector.h
 typedef struct Vector Vector;
@@ -37,7 +38,8 @@ joint_t *headJoint(limb_t *limb);
 joint_t *tailJoint(limb_t *limb);
 
 // make the limb reach for a point
-void reach(limb_t *limb, float targetX, float targetY, size_t iterNum);
+// if ensureReach, will drag the head when target is unreachable
+void reach(limb_t *limb, float targetX, float targetY, size_t iterNum, bool ensureReach);
 // pull the start of the limb to a target
 void pullHead(limb_t *limb, float targetX, float targetY);
 // pull the end of the limb to a target

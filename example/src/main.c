@@ -20,6 +20,7 @@ int main()
 {
     size_t iterNum = 10;
     bool shouldReach = false;
+    bool ensureReach = false;
 
     // create limb
     limb_t limb = newLimb(3);
@@ -41,6 +42,8 @@ int main()
             Rectangle iterNumLabel = { .x = 30, .y = 65, .width = 170, .height = 10 };
             Rectangle iterNumSlider = { .x = 30, .y = 90, .width = 70, .height = 10 };
             Rectangle controlsLabel = { .x = 30, .y = 115, .width = 170, .height = 20 };
+            Rectangle ensureReachBox = { .x = 30, .y = 150, .width = 10, .height = 10 };
+            Rectangle ensureReachLabel = { .x = 50, .y = 150, .width = 170, .height = 10 };
 
             if (GuiButton(clearBtn, "clear")) {
                 clearJoint(&limb);
@@ -58,10 +61,21 @@ int main()
 
             GuiLabel(controlsLabel, "space - continue/pause\nright arrow - iter");
 
-            if (!inUi) {
-                const size_t boundLen = 3;
+            GuiCheckBox(ensureReachBox, "", &ensureReach);
 
-                Rectangle rectList[boundLen] = { clearBtn, iterNumLabel, iterNumSlider };
+            GuiLabel(ensureReachLabel, "ensure reach");
+
+            if (!inUi) {
+                const size_t boundLen = 6;
+
+                Rectangle rectList[boundLen] = {
+                    clearBtn,
+                    iterNumLabel,
+                    iterNumSlider,
+                    controlsLabel,
+                    ensureReachBox,
+                    ensureReachLabel
+                };
 
                 for (size_t i = 0; i < boundLen; i++) {
                     if (CheckCollisionPointRec(mousePos, rectList[i])) {
@@ -84,8 +98,8 @@ int main()
 
         if (IsKeyPressed(KEY_SPACE)) shouldReach = !shouldReach;
 
-        if (shouldReach) reach(&limb, mousePos.x, mousePos.y, iterNum);
-        if (IsKeyPressed(KEY_RIGHT)) reach(&limb, mousePos.x, mousePos.y, 1);
+        if (shouldReach) reach(&limb, mousePos.x, mousePos.y, iterNum, ensureReach);
+        if (IsKeyPressed(KEY_RIGHT)) reach(&limb, mousePos.x, mousePos.y, 1, ensureReach);
 
         BeginDrawing();
 

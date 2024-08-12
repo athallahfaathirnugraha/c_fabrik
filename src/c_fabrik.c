@@ -2,6 +2,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <math.h>
 
 #include <vector.h>
@@ -47,7 +48,7 @@ joint_t *tailJoint(limb_t *limb)
     return getJoint(limb, jointLen(limb) - 1);
 }
 
-void reach(limb_t *limb, float targetX, float targetY, size_t iterNum)
+void reach(limb_t *limb, float targetX, float targetY, size_t iterNum, bool ensureReach)
 {
     if (jointLen(limb) == 0) return;
     
@@ -57,6 +58,10 @@ void reach(limb_t *limb, float targetX, float targetY, size_t iterNum)
     for (size_t i = 0; i < iterNum; i++) {
         pullTail(limb, targetX, targetY);
         pullHead(limb, headX, headY);
+    }
+
+    if (ensureReach) {
+        pullTail(limb, targetX, targetY);
     }
 }
 
