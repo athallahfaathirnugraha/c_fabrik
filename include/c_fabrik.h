@@ -7,12 +7,20 @@
 // vector.h
 typedef struct Vector Vector;
 
+// angle between joints must be bigger than left/right
+// in radians
+typedef struct minAngle_t
+{
+    float left;
+    float right;
+} minAngle_t;
+
 typedef struct joint_t
 {
     float x;
     float y;
     float distToNext;
-    // TODO: limiting angles?
+    minAngle_t minAngle;
 } joint_t;
 
 typedef struct limb_t
