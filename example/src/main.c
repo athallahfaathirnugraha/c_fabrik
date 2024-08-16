@@ -22,6 +22,11 @@ int main()
     bool shouldReach = false;
     bool ensureReach = false;
 
+    minAngle_t defaultMinAngle = {
+        .left = 0.75,
+        .right = 0.75
+    };
+
     // create limb
     limb_t limb = newLimb(3);
 
@@ -44,6 +49,9 @@ int main()
             Rectangle controlsLabel = { .x = 30, .y = 115, .width = 170, .height = 20 };
             Rectangle ensureReachBox = { .x = 30, .y = 150, .width = 10, .height = 10 };
             Rectangle ensureReachLabel = { .x = 50, .y = 150, .width = 170, .height = 10 };
+            Rectangle angleLabel = { .x = 30, .y = 175, .width = 170, .height = 10};
+            Rectangle leftAngleSlider = { .x = 30, .y = 195, .width = 50, .height = 10 };
+            Rectangle rightAngleSlider = { .x = 110, .y = 195, .width = 50, .height = 10 };
 
             if (GuiButton(clearBtn, "clear")) {
                 clearJoint(&limb);
@@ -64,6 +72,22 @@ int main()
             GuiCheckBox(ensureReachBox, "", &ensureReach);
 
             GuiLabel(ensureReachLabel, "ensure reach");
+
+            GuiLabel(angleLabel, "min angle");
+
+            float leftMinAngle;
+
+            if (GuiSlider(leftAngleSlider, "0", "pi", &leftMinAngle, 0, M_PI)) {
+                defaultMinAngle.left = leftMinAngle;
+                inUi = true;
+            }
+
+            float rightMinAngle;
+
+            if (GuiSlider(rightAngleSlider, "0", "pi", &rightMinAngle, 0, M_PI)) {
+                defaultMinAngle.right = rightMinAngle;
+                inUi = true;
+            }
 
             if (!inUi) {
                 const size_t boundLen = 6;
@@ -90,7 +114,8 @@ int main()
             // add joint
             joint_t joint = {
                 .x = mousePos.x,
-                .y = mousePos.y
+                .y = mousePos.y,
+                .minAngle = defaultMinAngle
             };
 
             addJoint(&limb, joint);
