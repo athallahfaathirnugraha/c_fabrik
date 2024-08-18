@@ -47,9 +47,11 @@ joint_t *tailJoint(limb_t *limb);
 
 // left angle of a joint
 // don't call on head and tail
+// always returns a positive value
 float leftAngle(limb_t *limb, size_t index);
 // right angle of a joint
 // don't call on head and tail
+// always returns a positive value
 float rightAngle(limb_t *limb, size_t index);
 
 // make the limb reach for a point
