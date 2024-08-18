@@ -126,6 +126,11 @@ int main()
         if (shouldReach) reach(&limb, mousePos.x, mousePos.y, iterNum, ensureReach);
         if (IsKeyPressed(KEY_RIGHT)) reach(&limb, mousePos.x, mousePos.y, 1, ensureReach);
 
+        if (IsKeyPressed(KEY_A) && jointLen(&limb) >= 3) {
+            printf("2nd joint left angle: %f\n", leftAngle(&limb, 1) * RAD2DEG);
+            printf("2nd joint right angle: %f\n", rightAngle(&limb, 1) * RAD2DEG);
+        }
+
         BeginDrawing();
 
         ClearBackground(colors.bg);

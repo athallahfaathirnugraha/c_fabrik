@@ -45,6 +45,13 @@ joint_t *headJoint(limb_t *limb);
 // get last joint in a limb
 joint_t *tailJoint(limb_t *limb);
 
+// left angle of a joint
+// don't call on head and tail
+float leftAngle(limb_t *limb, size_t index);
+// right angle of a joint
+// don't call on head and tail
+float rightAngle(limb_t *limb, size_t index);
+
 // make the limb reach for a point
 // if ensureReach, will drag the head when target is unreachable
 void reach(limb_t *limb, float targetX, float targetY, size_t iterNum, bool ensureReach);
