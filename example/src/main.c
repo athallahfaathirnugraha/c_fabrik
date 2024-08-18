@@ -45,13 +45,13 @@ int main()
         {
             Rectangle clearBtn = { .x = 30, .y = 30, .width = 50, .height = 20 };
             Rectangle iterNumLabel = { .x = 30, .y = 65, .width = 170, .height = 10 };
-            Rectangle iterNumSlider = { .x = 30, .y = 90, .width = 70, .height = 10 };
-            Rectangle controlsLabel = { .x = 30, .y = 115, .width = 170, .height = 20 };
-            Rectangle ensureReachBox = { .x = 30, .y = 150, .width = 10, .height = 10 };
-            Rectangle ensureReachLabel = { .x = 50, .y = 150, .width = 170, .height = 10 };
-            Rectangle angleLabel = { .x = 30, .y = 175, .width = 170, .height = 10};
-            Rectangle leftAngleSlider = { .x = 30, .y = 195, .width = 50, .height = 10 };
-            Rectangle rightAngleSlider = { .x = 110, .y = 195, .width = 50, .height = 10 };
+            Rectangle iterNumSlider = { .x = 30, .y = 85, .width = 70, .height = 10 };
+            Rectangle controlsLabel = { .x = 30, .y = 110, .width = 170, .height = 20 };
+            Rectangle ensureReachBox = { .x = 30, .y = 145, .width = 10, .height = 10 };
+            Rectangle ensureReachLabel = { .x = 50, .y = 145, .width = 170, .height = 10 };
+            Rectangle angleLabel = { .x = 30, .y = 170, .width = 170, .height = 10};
+            Rectangle leftAngleSlider = { .x = 30, .y = 190, .width = 50, .height = 10 };
+            Rectangle rightAngleSlider = { .x = 110, .y = 190, .width = 50, .height = 10 };
 
             if (GuiButton(clearBtn, "clear")) {
                 clearJoint(&limb);
