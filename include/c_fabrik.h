@@ -54,6 +54,11 @@ float leftAngle(limb_t *limb, size_t index);
 // always returns a positive value
 float rightAngle(limb_t *limb, size_t index);
 
+// return the middle of the left angle
+float leftMidAngle(limb_t *limb, size_t index);
+// return the middle of the right angle
+float rightMidAngle(limb_t *limb, size_t index);
+
 // make the limb reach for a point
 // if ensureReach, will drag the head when target is unreachable
 void reach(limb_t *limb, float targetX, float targetY, size_t iterNum, bool ensureReach);

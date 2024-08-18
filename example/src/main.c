@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <raylib.h>
 #include <stdbool.h>
+#include <math.h>
 
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
@@ -138,6 +139,42 @@ int main()
         for (size_t i = 0; i < jointLen(&limb); i++) {
             joint_t *a = getJoint(&limb, i);
             DrawCircle(a->x, a->y, POINTRAD, colors.line);
+
+            if (i >= 1 && i < jointLen(&limb) - 1) {
+                float angles[] = {
+                    leftMidAngle(&limb, i),
+                    leftAngle(&limb, i),
+                    rightMidAngle(&limb, i),
+                    rightAngle(&limb, i)
+                };
+
+                for (int i = 0; i < 4; i += 2) {
+                    float posAngle = angles[i];
+
+                    float dx = cos(posAngle);
+                    float dy = -sin(posAngle); // flipped y axis (raylib)
+
+                    float dist = 25.;
+
+                    float angle = angles[i + 1] * RAD2DEG;
+
+                    size_t strLen = snprintf(NULL, 0, "%.1f", angle);
+                    char *str = malloc(strLen + 1);
+                    snprintf(str, strLen + 1, "%.1f", angle);
+
+                    Vector2 strSize = MeasureTextEx(GetFontDefault(), str, 10, 1.);
+
+                    DrawText(
+                        str,
+                        a->x + dx * dist - strSize.x / 2.,
+                        a->y + dy * dist - strSize.y / 2.,
+                        10,
+                        GRAY
+                    );
+
+                    free(str);
+                }
+            }
 
             if (i + 1 < jointLen(&limb)) {
                 // draw line between a & b

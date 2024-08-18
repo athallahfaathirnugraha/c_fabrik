@@ -54,8 +54,8 @@ static void getAngles(limb_t *limb, size_t index, float *outPrev, float *outNext
     joint_t *prevJoint = getJoint(limb, index - 1);
     joint_t *nextJoint = getJoint(limb, index + 1);
 
-    *outPrev = atan2f(prevJoint->x - joint->x, joint->y - prevJoint->y);
-    *outNext = atan2f(nextJoint->x - joint->x, joint->y - nextJoint->y);
+    *outPrev = atan2f(joint->y - prevJoint->y, prevJoint->x - joint->x);
+    *outNext = atan2f(joint->y - nextJoint->y, nextJoint->x - joint->x);
 }
 
 float leftAngle(limb_t *limb, size_t index)
@@ -77,6 +77,30 @@ float rightAngle(limb_t *limb, size_t index)
     getAngles(limb, index, &prevAngle, &nextAngle);
 
     float res = prevAngle - nextAngle;
+    while (res < 0) res += 2 * M_PI;
+
+    return res;
+}
+
+float leftMidAngle(limb_t *limb, size_t index)
+{
+    float prevAngle, nextAngle;
+    getAngles(limb, index, &prevAngle, &nextAngle);
+
+    float res = (prevAngle + nextAngle) / 2.;
+    while (res > 2 * M_PI) res -= 2 * M_PI;
+    while (res < 0) res += 2 * M_PI;
+
+    return res;
+}
+
+float rightMidAngle(limb_t *limb, size_t index)
+{
+    float prevAngle, nextAngle;
+    getAngles(limb, index, &prevAngle, &nextAngle);
+
+    float res = (prevAngle + nextAngle) / 2. + M_PI;
+    while (res > 2 * M_PI) res -= 2 * M_PI;
     while (res < 0) res += 2 * M_PI;
 
     return res;
