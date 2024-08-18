@@ -169,7 +169,7 @@ int main()
                         a->x + dx * dist - strSize.x / 2.,
                         a->y + dy * dist - strSize.y / 2.,
                         10,
-                        GRAY
+                        colors.line
                     );
 
                     free(str);
