@@ -54,8 +54,8 @@ static void getAngles(limb_t *limb, size_t index, float *outPrev, float *outNext
     joint_t *prevJoint = getJoint(limb, index - 1);
     joint_t *nextJoint = getJoint(limb, index + 1);
 
-    *outPrev = atan2f(joint->y - prevJoint->y, prevJoint->x - joint->x);
-    *outNext = atan2f(joint->y - nextJoint->y, nextJoint->x - joint->x);
+    *outPrev = atan2f(joint->y - prevJoint->y, joint->x - prevJoint->x);
+    *outNext = atan2f(joint->y - nextJoint->y, joint->x - nextJoint->x);
 }
 
 float leftAngle(limb_t *limb, size_t index)

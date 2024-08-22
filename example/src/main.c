@@ -152,7 +152,7 @@ int main()
                     float posAngle = angles[i];
 
                     float dx = cos(posAngle);
-                    float dy = -sin(posAngle); // flipped y axis (raylib)
+                    float dy = sin(posAngle); // flipped y axis (raylib)
 
                     float dist = 25.;
 
@@ -181,8 +181,8 @@ int main()
                 DrawCircleSector(
                     jointPos,
                     13,
-                    (-leftMidAngle(&limb, i) + a->minAngle.left / 2.) * RAD2DEG,
-                    (-leftMidAngle(&limb, i) - a->minAngle.left / 2.) * RAD2DEG,
+                    (leftMidAngle(&limb, i) + a->minAngle.left / 2.) * RAD2DEG,
+                    (leftMidAngle(&limb, i) - a->minAngle.left / 2.) * RAD2DEG,
                     10,
                     RED
                 );
@@ -190,8 +190,8 @@ int main()
                 DrawCircleSector(
                     jointPos,
                     13,
-                    (-rightMidAngle(&limb, i) + a->minAngle.right / 2.) * RAD2DEG,
-                    (-rightMidAngle(&limb, i) - a->minAngle.right / 2.) * RAD2DEG,
+                    (rightMidAngle(&limb, i) + a->minAngle.right / 2.) * RAD2DEG,
+                    (rightMidAngle(&limb, i) - a->minAngle.right / 2.) * RAD2DEG,
                     10,
                     RED
                 );
