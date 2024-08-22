@@ -174,6 +174,27 @@ int main()
 
                     free(str);
                 }
+
+                // draw danger zone
+                Vector2 jointPos = { .x = a->x, .y = a->y };
+
+                DrawCircleSector(
+                    jointPos,
+                    13,
+                    (-leftMidAngle(&limb, i) + a->minAngle.left / 2.) * RAD2DEG,
+                    (-leftMidAngle(&limb, i) - a->minAngle.left / 2.) * RAD2DEG,
+                    10,
+                    RED
+                );
+
+                DrawCircleSector(
+                    jointPos,
+                    13,
+                    (-rightMidAngle(&limb, i) + a->minAngle.right / 2.) * RAD2DEG,
+                    (-rightMidAngle(&limb, i) - a->minAngle.right / 2.) * RAD2DEG,
+                    10,
+                    RED
+                );
             }
 
             if (i + 1 < jointLen(&limb)) {
