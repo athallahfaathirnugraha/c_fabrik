@@ -184,7 +184,7 @@ int main()
                     (leftMidAngle(&limb, i) + a->minAngle.left / 2.) * RAD2DEG,
                     (leftMidAngle(&limb, i) - a->minAngle.left / 2.) * RAD2DEG,
                     10,
-                    RED
+                    Fade(RED, 0.5)
                 );
 
                 DrawCircleSector(
@@ -193,7 +193,7 @@ int main()
                     (rightMidAngle(&limb, i) + a->minAngle.right / 2.) * RAD2DEG,
                     (rightMidAngle(&limb, i) - a->minAngle.right / 2.) * RAD2DEG,
                     10,
-                    RED
+                    Fade(RED, 0.5)
                 );
             }
 
