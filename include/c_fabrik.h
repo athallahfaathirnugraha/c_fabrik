@@ -45,6 +45,7 @@ joint_t *headJoint(limb_t *limb);
 // get last joint in a limb
 joint_t *tailJoint(limb_t *limb);
 
+void getAngles(limb_t *limb, size_t index, float *outPrev, float *outNext);
 // left angle of a joint
 // don't call on head and tail
 // always returns a positive value
