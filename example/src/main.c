@@ -76,17 +76,19 @@ int main()
 
             GuiLabel(angleLabel, "min angle");
 
-            float leftMinAngle;
+            if (GuiSlider(leftAngleSlider, "0", "pi", &defaultMinAngle.left, 0, M_PI)) {
+                for (size_t i = 0; i < jointLen(&limb); i++) {
+                    getJoint(&limb, i)->minAngle = defaultMinAngle;
+                }
 
-            if (GuiSlider(leftAngleSlider, "0", "pi", &leftMinAngle, 0, M_PI)) {
-                defaultMinAngle.left = leftMinAngle;
                 inUi = true;
             }
 
-            float rightMinAngle;
+            if (GuiSlider(rightAngleSlider, "0", "pi", &defaultMinAngle.right, 0, M_PI)) {
+                for (size_t i = 0; i < jointLen(&limb); i++) {
+                    getJoint(&limb, i)->minAngle = defaultMinAngle;
+                }
 
-            if (GuiSlider(rightAngleSlider, "0", "pi", &rightMinAngle, 0, M_PI)) {
-                defaultMinAngle.right = rightMinAngle;
                 inUi = true;
             }
 
