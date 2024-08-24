@@ -24,8 +24,8 @@ int main()
     bool ensureReach = false;
 
     minAngle_t defaultMinAngle = {
-        .left = 2.9,
-        .right = 2.9
+        .left = 2.3,
+        .right = 2.3
     };
 
     // create limb
