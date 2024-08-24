@@ -122,6 +122,28 @@ bool shouldAdjustRightAngle(limb_t *limb, size_t index, float *outDelta)
     return delta > 0;
 }
 
+static void rotatePoint(
+    float x,
+    float y,
+    float originX,
+    float originY,
+    float rad,
+    float *outX,
+    float *outY
+) {
+    float translatedX = x - originX;
+    float translatedY = y - originY;
+
+    float transRotatedX = -translatedX * cos(rad) - translatedY * sin(rad);
+    float transRotatedY = translatedY * cos(rad) - translatedX * sin(rad);
+
+    float rotatedX = transRotatedX + originX;
+    float rotatedY = transRotatedY + originY;
+
+    if (outX) *outX = rotatedX;
+    if (outY) *outY = rotatedY;
+}
+
 void rotateToHead(limb_t *limb, size_t startIndex, float rad)
 {
     for (int i = startIndex; i >= 0; i--) {}
