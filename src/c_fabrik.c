@@ -147,38 +147,40 @@ void rotatePoint(
 void rotateToHead(limb_t *limb, size_t startIndex, float rad)
 {
     joint_t *originJoint = getJoint(limb, startIndex);
+    joint_t *nextJoint = getJoint(limb, startIndex - 1);
+    
+    rotatePoint(
+        nextJoint->x,
+        nextJoint->y,
+        originJoint->x,
+        originJoint->y,
+        rad,
+        &nextJoint->x,
+        &nextJoint->y
+    );
 
-    for (int i = startIndex; i >= 0; i--) {
-        joint_t *joint = getJoint(limb, i);
-        
-        rotatePoint(
-            joint->x,
-            joint->y,
-            originJoint->x,
-            originJoint->y,
-            rad,
-            &joint->x,
-            &joint->y
-        );
+    for (int i = startIndex - 2; i >= 0; i--) {
+        pullJoint(limb, i, i + 1);
     }
 }
 
 void rotateToTail(limb_t *limb, size_t startIndex, float rad)
 {
     joint_t *originJoint = getJoint(limb, startIndex);
-    
-    for (size_t i = startIndex; i < jointLen(limb); i++) {
-        joint_t *joint = getJoint(limb, i);
-        
-        rotatePoint(
-            joint->x,
-            joint->y,
-            originJoint->x,
-            originJoint->y,
-            rad,
-            &joint->x,
-            &joint->y
-        );
+    joint_t *nextJoint = getJoint(limb, startIndex + 1);
+
+    rotatePoint(
+        nextJoint->x,
+        nextJoint->y,
+        originJoint->x,
+        originJoint->y,
+        rad,
+        &nextJoint->x,
+        &nextJoint->y
+    );
+
+    for (size_t i = startIndex + 2; i < jointLen(limb); i++) {
+        pullJoint(limb, i, i - 1);
     }
 }
 
@@ -228,7 +230,7 @@ void reach(limb_t *limb, float targetX, float targetY, size_t iterNum, bool ensu
     adjustAngle(limb, ensureReach);
 }
 
-static void pullJoint(limb_t *limb, size_t jointIndex, size_t targetIndex)
+void pullJoint(limb_t *limb, size_t jointIndex, size_t targetIndex)
 {
     joint_t *joint = getJoint(limb, jointIndex);
     joint_t *target = getJoint(limb, targetIndex);

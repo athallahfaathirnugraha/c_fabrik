@@ -77,14 +77,18 @@ void rotatePoint(
     float *outY
 );
 
-// rotate all joints from startIndex (inclusive) to head
+// rotate one joint after startIndex (exclusive) to head
+// startIndex will be the origin. the rest will be pulled
 void rotateToHead(limb_t *limb, size_t startIndex, float rad);
-// rotate all joints from startIndex (inclusive) to tail
+// rotate one joint from startIndex (exclusive) to tail
+// startIndex will be the origin. the rest will be pulled
 void rotateToTail(limb_t *limb, size_t startIndex, float rad);
 
 // make the limb reach for a point
 // if ensureReach, will drag the head when target is unreachable
 void reach(limb_t *limb, float targetX, float targetY, size_t iterNum, bool ensureReach);
+// pull joint to target
+void pullJoint(limb_t *limb, size_t jointIndex, size_t targetIndex);
 // pull the start of the limb to a target
 void pullHead(limb_t *limb, float targetX, float targetY);
 // pull the end of the limb to a target
