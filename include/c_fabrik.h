@@ -67,6 +67,16 @@ bool shouldAdjustLeftAngle(limb_t *limb, size_t index, float *outDelta);
 // delta is the difference between the min angle and the right angle
 bool shouldAdjustRightAngle(limb_t *limb, size_t index, float *outDelta);
 
+void rotatePoint(
+    float x,
+    float y,
+    float originX,
+    float originY,
+    float rad,
+    float *outX,
+    float *outY
+);
+
 // rotate all joints from startIndex (inclusive) to head
 void rotateToHead(limb_t *limb, size_t startIndex, float rad);
 // rotate all joints from startIndex (inclusive) to tail

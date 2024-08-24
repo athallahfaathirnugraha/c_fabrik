@@ -122,7 +122,7 @@ bool shouldAdjustRightAngle(limb_t *limb, size_t index, float *outDelta)
     return delta > 0;
 }
 
-static void rotatePoint(
+void rotatePoint(
     float x,
     float y,
     float originX,
@@ -134,8 +134,8 @@ static void rotatePoint(
     float translatedX = x - originX;
     float translatedY = y - originY;
 
-    float transRotatedX = -translatedX * cos(rad) - translatedY * sin(rad);
-    float transRotatedY = translatedY * cos(rad) - translatedX * sin(rad);
+    float transRotatedX = translatedX * cos(rad) - translatedY * sin(-rad);
+    float transRotatedY = translatedY * cos(rad) + translatedX * sin(-rad);
 
     float rotatedX = transRotatedX + originX;
     float rotatedY = transRotatedY + originY;
@@ -146,12 +146,40 @@ static void rotatePoint(
 
 void rotateToHead(limb_t *limb, size_t startIndex, float rad)
 {
-    for (int i = startIndex; i >= 0; i--) {}
+    joint_t *originJoint = getJoint(limb, startIndex);
+
+    for (int i = startIndex; i >= 0; i--) {
+        joint_t *joint = getJoint(limb, i);
+        
+        rotatePoint(
+            joint->x,
+            joint->y,
+            originJoint->x,
+            originJoint->y,
+            rad,
+            &joint->x,
+            &joint->y
+        );
+    }
 }
 
 void rotateToTail(limb_t *limb, size_t startIndex, float rad)
 {
-    for (size_t i = startIndex; i < jointLen(limb); i++) {}
+    joint_t *originJoint = getJoint(limb, startIndex);
+    
+    for (size_t i = startIndex; i < jointLen(limb); i++) {
+        joint_t *joint = getJoint(limb, i);
+        
+        rotatePoint(
+            joint->x,
+            joint->y,
+            originJoint->x,
+            originJoint->y,
+            rad,
+            &joint->x,
+            &joint->y
+        );
+    }
 }
 
 // ensures limb does not have a joint that goes past min angle
@@ -163,9 +191,9 @@ static void adjustAngle(limb_t *limb, bool ensureReach)
         // start on tail
         for (int i = jointLen(limb) - 2; i >= 1; i--) {
             if (shouldAdjustLeftAngle(limb, i, &delta)) {
-                rotateToHead(limb, i, -delta / 2.);
-            } else if (shouldAdjustRightAngle(limb, i, &delta)) {
                 rotateToHead(limb, i, delta / 2.);
+            } else if (shouldAdjustRightAngle(limb, i, &delta)) {
+                rotateToHead(limb, i, -delta / 2.);
             }
         }
     } else {
