@@ -106,6 +106,58 @@ float leftMidAngle(limb_t *limb, size_t index)
     return res;
 }
 
+bool shouldAdjustLeftAngle(limb_t *limb, size_t index, float *outDelta)
+{
+    float minAngle = getJoint(limb, index)->minAngle.left;
+    float delta = minAngle - leftAngle(limb, index);
+    if (outDelta) *outDelta = delta;
+    return delta > 0;
+}
+
+bool shouldAdjustRightAngle(limb_t *limb, size_t index, float *outDelta)
+{
+    float minAngle = getJoint(limb, index)->minAngle.right;
+    float delta = minAngle - rightAngle(limb, index);
+    if (outDelta) *outDelta = delta;
+    return delta > 0;
+}
+
+void rotateToHead(limb_t *limb, size_t startIndex, float rad)
+{
+    for (int i = startIndex; i >= 0; i--) {}
+}
+
+void rotateToTail(limb_t *limb, size_t startIndex, float rad)
+{
+    for (size_t i = startIndex; i < jointLen(limb); i++) {}
+}
+
+// ensures limb does not have a joint that goes past min angle
+static void adjustAngle(limb_t *limb, bool ensureReach)
+{
+    float delta;
+    
+    if (ensureReach) {
+        // start on tail
+        for (int i = jointLen(limb) - 2; i >= 1; i--) {
+            if (shouldAdjustLeftAngle(limb, i, &delta)) {
+                rotateToHead(limb, i, -delta / 2.);
+            } else if (shouldAdjustRightAngle(limb, i, &delta)) {
+                rotateToHead(limb, i, delta / 2.);
+            }
+        }
+    } else {
+        // start on head
+        for (size_t i = 1; i < jointLen(limb) - 1; i++) {
+            if (shouldAdjustLeftAngle(limb, i, &delta)) {
+                rotateToTail(limb, i, -delta / 2.);
+            } else if (shouldAdjustRightAngle(limb, i, &delta)) {
+                rotateToTail(limb, i, delta / 2.);
+            }
+        }
+    }
+}
+
 void reach(limb_t *limb, float targetX, float targetY, size_t iterNum, bool ensureReach)
 {
     if (jointLen(limb) == 0) return;
@@ -121,6 +173,9 @@ void reach(limb_t *limb, float targetX, float targetY, size_t iterNum, bool ensu
     if (ensureReach) {
         pullTail(limb, targetX, targetY);
     }
+
+    // ensure does not go past min angle
+    adjustAngle(limb, ensureReach);
 }
 
 static void pullJoint(limb_t *limb, size_t jointIndex, size_t targetIndex)

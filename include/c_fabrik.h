@@ -60,6 +60,18 @@ float leftMidAngle(limb_t *limb, size_t index);
 // return the middle of the right angle
 float rightMidAngle(limb_t *limb, size_t index);
 
+// returns true if left angle < min angle
+// delta is the difference between the min angle and the left angle
+bool shouldAdjustLeftAngle(limb_t *limb, size_t index, float *outDelta);
+// returns true if right angle < min angle
+// delta is the difference between the min angle and the right angle
+bool shouldAdjustRightAngle(limb_t *limb, size_t index, float *outDelta);
+
+// rotate all joints from startIndex (inclusive) to head
+void rotateToHead(limb_t *limb, size_t startIndex, float rad);
+// rotate all joints from startIndex (inclusive) to tail
+void rotateToTail(limb_t *limb, size_t startIndex, float rad);
+
 // make the limb reach for a point
 // if ensureReach, will drag the head when target is unreachable
 void reach(limb_t *limb, float targetX, float targetY, size_t iterNum, bool ensureReach);
