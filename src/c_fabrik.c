@@ -123,8 +123,15 @@ void reach(limb_t *limb, float targetX, float targetY, size_t iterNum, bool ensu
     }
 }
 
-static void pullJoint(joint_t *joint, joint_t *target, float targetDist)
+static void pullJoint(limb_t *limb, size_t jointIndex, size_t targetIndex)
 {
+    joint_t *joint = getJoint(limb, jointIndex);
+    joint_t *target = getJoint(limb, targetIndex);
+
+    float targetDist =
+        (targetIndex < jointIndex) ?
+        target->distToNext : joint->distToNext;
+    
     float dist = fdist(joint->x, joint->y, target->x, target->y);
     float deltaDist = dist - targetDist;
 
@@ -148,10 +155,7 @@ void pullHead(limb_t *limb, float targetX, float targetY)
 
     // pull rest of limb
     for (size_t i = 1; i < jointLen(limb); i++) {
-        joint_t *joint = getJoint(limb, i);
-        joint_t *prevJoint = getJoint(limb, i - 1);
-
-        pullJoint(joint, prevJoint, prevJoint->distToNext);
+        pullJoint(limb, i, i - 1);
     }
 }
 
@@ -165,10 +169,7 @@ void pullTail(limb_t *limb, float targetX, float targetY)
     
     // pull rest of limb
     for (int i = jointLen(limb) - 2; i >= 0; i--) {
-        joint_t *joint = getJoint(limb, i);
-        joint_t *nextJoint = getJoint(limb, i + 1);
-
-        pullJoint(joint, nextJoint, joint->distToNext);
+        pullJoint(limb, i, i + 1);
     }
 }
 
