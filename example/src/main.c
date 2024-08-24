@@ -124,21 +124,6 @@ int main()
             addJoint(&limb, joint);
         }
 
-        if (IsKeyPressed(KEY_J)) {
-            joint_t *thirdJoint = getJoint(&limb, 2);
-            joint_t *secondJoint = getJoint(&limb, 1);
-            
-            rotatePoint(
-                thirdJoint->x,
-                thirdJoint->y,
-                secondJoint->x,
-                secondJoint->y,
-                .01f,
-                &thirdJoint->x,
-                &thirdJoint->y
-            );
-        }
-
         if (IsKeyPressed(KEY_SPACE)) shouldReach = !shouldReach;
 
         if (shouldReach) reach(&limb, mousePos.x, mousePos.y, iterNum, ensureReach);

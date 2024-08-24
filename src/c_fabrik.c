@@ -48,7 +48,7 @@ joint_t *tailJoint(limb_t *limb)
     return getJoint(limb, jointLen(limb) - 1);
 }
 
-void getAngles(limb_t *limb, size_t index, float *outPrev, float *outNext)
+static void getAngles(limb_t *limb, size_t index, float *outPrev, float *outNext)
 {
     joint_t *joint = getJoint(limb, index);
     joint_t *prevJoint = getJoint(limb, index - 1);
@@ -122,7 +122,7 @@ bool shouldAdjustRightAngle(limb_t *limb, size_t index, float *outDelta)
     return delta > 0;
 }
 
-void rotatePoint(
+static void rotatePoint(
     float x,
     float y,
     float originX,

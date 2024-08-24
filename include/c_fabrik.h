@@ -45,7 +45,6 @@ joint_t *headJoint(limb_t *limb);
 // get last joint in a limb
 joint_t *tailJoint(limb_t *limb);
 
-void getAngles(limb_t *limb, size_t index, float *outPrev, float *outNext);
 // left angle of a joint
 // don't call on head and tail
 // always returns a positive value
@@ -66,16 +65,6 @@ bool shouldAdjustLeftAngle(limb_t *limb, size_t index, float *outDelta);
 // returns true if right angle < min angle
 // delta is the difference between the min angle and the right angle
 bool shouldAdjustRightAngle(limb_t *limb, size_t index, float *outDelta);
-
-void rotatePoint(
-    float x,
-    float y,
-    float originX,
-    float originY,
-    float rad,
-    float *outX,
-    float *outY
-);
 
 // rotate one joint after startIndex (exclusive) to head
 // startIndex will be the origin. the rest will be pulled
